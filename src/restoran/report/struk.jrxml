@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="600" pageHeight="400" orientation="Landscape" columnWidth="560" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f4e55b37-977c-4d7a-9736-65b2df7ce99b">
+	<property name="ireport.zoom" value="0.909090909090913"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="no" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     pelanggan.`nm_pelanggan` AS pelanggan_nm_pelanggan,
+     transaksi.`no_transaksi` AS transaksi_no_transaksi,
+     transaksi.`subtotal_makanan` AS transaksi_subtotal_makanan,
+     transaksi.`subtotal_minuman` AS transaksi_subtotal_minuman,
+     transaksi.`total` AS transaksi_total,
+     detail_transaksi.`jmlh_makanan` AS detail_transaksi_jmlh_makanan,
+     detail_transaksi.`jmlh_minuman` AS detail_transaksi_jmlh_minuman,
+     menu_makanan.`nm_makanan` AS menu_makanan_nm_makanan,
+     menu_minuman.`nm_minuman` AS menu_minuman_nm_minuman,
+     transaksi.`tgl_transaksi` AS transaksi_tgl_transaksi,
+     menu_minuman.`harga_minuman` AS menu_minuman_harga_minuman,
+     menu_makanan.`harga_makanan` AS menu_makanan_harga_makanan
+FROM
+     `pelanggan` pelanggan INNER JOIN `transaksi` transaksi ON pelanggan.`id_pelanggan` = transaksi.`id_pelanggan`
+     INNER JOIN `detail_transaksi` detail_transaksi ON transaksi.`no_transaksi` = detail_transaksi.`no_transaksi`
+     INNER JOIN `menu_makanan` menu_makanan ON detail_transaksi.`id_makanan` = menu_makanan.`id_makanan`
+     INNER JOIN `menu_minuman` menu_minuman ON detail_transaksi.`id_minuman` = menu_minuman.`id_minuman`
+WHERE
+    transaksi.no_transaksi = $P{no}]]>
+	</queryString>
+	<field name="pelanggan_nm_pelanggan" class="java.lang.String"/>
+	<field name="transaksi_no_transaksi" class="java.lang.Integer"/>
+	<field name="transaksi_subtotal_makanan" class="java.lang.Integer"/>
+	<field name="transaksi_subtotal_minuman" class="java.lang.Integer"/>
+	<field name="transaksi_total" class="java.lang.Integer"/>
+	<field name="detail_transaksi_jmlh_makanan" class="java.lang.Integer"/>
+	<field name="detail_transaksi_jmlh_minuman" class="java.lang.Integer"/>
+	<field name="menu_makanan_nm_makanan" class="java.lang.String"/>
+	<field name="menu_minuman_nm_minuman" class="java.lang.String"/>
+	<field name="transaksi_tgl_transaksi" class="java.sql.Timestamp"/>
+	<field name="menu_minuman_harga_minuman" class="java.lang.Integer"/>
+	<field name="menu_makanan_harga_makanan" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="127" splitType="Stretch">
+			<staticText>
+				<reportElement x="200" y="11" width="162" height="43" uuid="1fec643c-e986-40b2-bcb9-f18fe9dbbe63"/>
+				<textElement textAlignment="Center">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GO WARTEG]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="161" y="54" width="246" height="20" uuid="299bddac-7d50-4e10-96dd-ad3e8386148d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[-----------------------------------------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="455" y="74" width="100" height="20" uuid="3bd0483f-fb1f-43c1-857d-d7e5d973f329"/>
+				<text><![CDATA[Tanggal]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="455" y="94" width="100" height="20" uuid="69bf06cb-881e-4e73-98bf-03299e8a2c6d"/>
+				<textFieldExpression><![CDATA[$F{transaksi_tgl_transaksi}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="49" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="8007819c-474e-489e-b7d0-d369cdb1b422"/>
+				<text><![CDATA[No Transaksi]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="114" y="0" width="100" height="20" uuid="ebc87e01-ea52-4aa0-9dde-f78b1be5cede"/>
+				<textFieldExpression><![CDATA[$F{transaksi_no_transaksi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="29" width="100" height="20" uuid="e186c012-8380-45a3-83f9-10952e18f8a3"/>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="114" y="29" width="100" height="20" uuid="faa564b3-b32b-48af-9dfd-3c37f7b344b2"/>
+				<textFieldExpression><![CDATA[$F{pelanggan_nm_pelanggan}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement x="179" y="30" width="100" height="20" uuid="fe5f9a31-ab34-4701-8b04-2fbf02a05793"/>
+				<text><![CDATA[Jumlah]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="307" y="30" width="100" height="20" uuid="2148c072-01f7-4b83-9bc7-6ed757a44fd3"/>
+				<text><![CDATA[Harga]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="435" y="30" width="100" height="20" uuid="6a11cba5-79b4-407b-bca0-5906da593505"/>
+				<text><![CDATA[Subtotal]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="15" width="560" height="1" uuid="d2c5ec7c-37b1-49e2-b2e0-2b946e07f499"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="126" splitType="Stretch">
+			<textField>
+				<reportElement x="61" y="0" width="100" height="20" uuid="2802d23d-b263-41f4-9388-1dece8be1aab"/>
+				<textFieldExpression><![CDATA[$F{menu_makanan_nm_makanan}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="61" y="32" width="100" height="20" uuid="8917361f-938d-466b-9c07-89a2442cd794"/>
+				<textFieldExpression><![CDATA[$F{menu_minuman_nm_minuman}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="179" y="0" width="100" height="20" uuid="e396e989-88e4-4cdb-b16f-fc205bd552ce"/>
+				<textFieldExpression><![CDATA[$F{detail_transaksi_jmlh_minuman}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="43" height="20" uuid="75bf557c-611b-479a-bcb3-b54ace9583e1"/>
+				<text><![CDATA[Makanan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="32" width="43" height="20" uuid="fd5d2571-1ee9-4f6b-91f8-ee459727bb3b"/>
+				<text><![CDATA[Minuman]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="307" y="0" width="100" height="20" uuid="d6445c79-36fa-4611-a778-4f71f85877f8"/>
+				<textFieldExpression><![CDATA[$F{menu_makanan_harga_makanan}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="435" y="0" width="100" height="20" uuid="acbd9bd5-5a86-4fd2-bf1b-3e70515496f2"/>
+				<textFieldExpression><![CDATA[$F{transaksi_subtotal_makanan}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="435" y="32" width="100" height="20" uuid="373f2fb6-f067-45b3-8a01-d9f39be8dacf"/>
+				<textFieldExpression><![CDATA[$F{transaksi_subtotal_minuman}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="179" y="32" width="100" height="20" uuid="84bfecc4-a226-4f3c-b932-bfee94e7ea78"/>
+				<textFieldExpression><![CDATA[$F{detail_transaksi_jmlh_minuman}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="307" y="32" width="100" height="20" uuid="9d2e15c6-a614-4274-8083-ed053ca820ef"/>
+				<textFieldExpression><![CDATA[$F{menu_minuman_harga_minuman}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="435" y="80" width="100" height="20" uuid="28b869cf-b9b9-4868-8894-585fed12afa9"/>
+				<text><![CDATA[Total Bayar]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="435" y="106" width="100" height="20" uuid="009a6f6f-3aeb-4c0c-8b0e-2c17d2b12426"/>
+				<textFieldExpression><![CDATA[$F{transaksi_total}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="65" width="560" height="1" uuid="b6b58a5a-132c-4d3b-8e1a-923c34683741"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>
