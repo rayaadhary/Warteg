@@ -1870,11 +1870,11 @@ public class formUtama extends javax.swing.JFrame {
 
     private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
         // Transaksi
-        dashboard.setVisible(false);
-        kasir.setVisible(false);
-        makanan.setVisible(false);
-        minuman.setVisible(false);
-        transaksi.setVisible(true);
+//        dashboard.setVisible(false);
+//        kasir.setVisible(false);
+//        makanan.setVisible(false);
+//        minuman.setVisible(false);
+//        transaksi.setVisible(true);
     }//GEN-LAST:event_jMenu3MouseClicked
 
     private void jMenu5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu5MouseClicked
