@@ -51,6 +51,8 @@ public class formUtama extends javax.swing.JFrame {
         pendapatan();
         TampilKasir();
         TampilDaftarTransaksi();
+         tampilPelanggan();
+        tampilDetailTransaksi();
         TampilMakanan();
         TampilMinuman();
         //TampilTransaksi();
@@ -141,6 +143,63 @@ public class formUtama extends javax.swing.JFrame {
         return txtIdKasir;
     }
     
+      private void tampilPelanggan() 
+    {
+        model = new DefaultTableModel();
+        model.addColumn("ID Pelanggan");
+        model.addColumn("Nama Pelanggan");
+        
+        try {
+            con = Koneksi.getConnection();
+            sql = "select * from pelanggan";
+            stt = con.createStatement();
+            rss = stt.executeQuery(sql);            
+            while(rss.next()) {                
+                model.addRow(new Object[] {                   
+                    rss.getString(1),
+                    rss.getString(2)
+                });
+            }
+        tabelPelanggan.setModel(model);
+        } 
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "error karena : "+e);
+        }
+    }
+    
+    private void tampilDetailTransaksi() 
+    {
+        model = new DefaultTableModel();
+        model.addColumn("No. Transaksi");
+        model.addColumn("Makanan");
+        model.addColumn("Jumlah Makanan");
+        model.addColumn("Minuman");
+        model.addColumn("Jumlah Minuman");
+        
+        try {
+            con = Koneksi.getConnection();
+            sql = "select detail_transaksi.no_transaksi, nm_makanan, jmlh_makanan, nm_minuman, jmlh_minuman from detail_transaksi "
+                    + "join menu_makanan on detail_transaksi.id_makanan = menu_makanan.id_makanan "
+                    + "join menu_minuman on detail_transaksi.id_minuman = menu_minuman.id_minuman";
+            stt = con.createStatement();
+            rss = stt.executeQuery(sql);            
+            while(rss.next()) {                
+                model.addRow(new Object[] {                   
+                    rss.getString(1),
+                    rss.getString(2),
+                    rss.getString(3),
+                    rss.getString(4),
+                    rss.getString(5)
+                });
+            }
+        tabelDetailTransaksi.setModel(model);
+        } 
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "error karena : "+e);
+        }
+    }
     
     private void TampilMakanan()
     {
@@ -410,7 +469,6 @@ public class formUtama extends javax.swing.JFrame {
         txtJumlahMinuman = new javax.swing.JTextField();
         cmbIdMinuman = new javax.swing.JComboBox<>();
         btnBeli = new javax.swing.JButton();
-        jScrollPane7 = new javax.swing.JScrollPane();
         btnTambahTransaksi = new javax.swing.JButton();
         cetakStruk = new javax.swing.JButton();
         jLabel27 = new javax.swing.JLabel();
@@ -418,6 +476,7 @@ public class formUtama extends javax.swing.JFrame {
         jLabel30 = new javax.swing.JLabel();
         txtNmPelanggan = new javax.swing.JTextField();
         txtIdPelanggan = new javax.swing.JTextField();
+        jScrollPane7 = new javax.swing.JScrollPane();
         minuman = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
@@ -446,15 +505,30 @@ public class formUtama extends javax.swing.JFrame {
         btnHapusKasir = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         tabelKasir = new javax.swing.JTable();
+        detailTransaksi = new javax.swing.JPanel();
+        jPanel14 = new javax.swing.JPanel();
+        jLabel36 = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        tabelDetailTransaksi = new javax.swing.JTable();
+        pelanggan = new javax.swing.JPanel();
+        jPanel13 = new javax.swing.JPanel();
+        jLabel34 = new javax.swing.JLabel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        tabelPelanggan = new javax.swing.JTable();
+        jLabel35 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu5 = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         cetakLaporan = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
 
         jTable5.setModel(new javax.swing.table.DefaultTableModel(
@@ -1041,32 +1115,6 @@ public class formUtama extends javax.swing.JFrame {
             }
         });
 
-        tabelTransaksi.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "No Transaksi", "Tanggal", "Nama Makanan", "Nama Minuman", "Harga Makanan", "Harga Minuman", "Subtotal Makanan", "Subtotal Minuman", "Hapus"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, true
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tabelTransaksi.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabelTransaksiMouseClicked(evt);
-            }
-        });
-        jScrollPane7.setViewportView(tabelTransaksi);
-
         btnTambahTransaksi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/add.png"))); // NOI18N
         btnTambahTransaksi.setText("Tambah Transaksi");
         btnTambahTransaksi.addActionListener(new java.awt.event.ActionListener() {
@@ -1092,10 +1140,40 @@ public class formUtama extends javax.swing.JFrame {
 
         txtIdPelanggan.setEditable(false);
 
+        tabelTransaksi.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "No Transaksi", "Tanggal", "Nama Makanan", "Nama Minuman", "Harga Makanan", "Harga Minuman", "Subtotal Makanan", "Subtotal Minuman", "Hapus"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tabelTransaksi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelTransaksiMouseClicked(evt);
+            }
+        });
+        jScrollPane7.setViewportView(tabelTransaksi);
+
         javax.swing.GroupLayout transaksiLayout = new javax.swing.GroupLayout(transaksi);
         transaksi.setLayout(transaksiLayout);
         transaksiLayout.setHorizontalGroup(
             transaksiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(transaksiLayout.createSequentialGroup()
+                .addGap(258, 258, 258)
+                .addComponent(btnBeli, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(transaksiLayout.createSequentialGroup()
                 .addGroup(transaksiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(transaksiLayout.createSequentialGroup()
@@ -1103,7 +1181,7 @@ public class formUtama extends javax.swing.JFrame {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 32, Short.MAX_VALUE))
                     .addGroup(transaksiLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(transaksiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1128,21 +1206,16 @@ public class formUtama extends javax.swing.JFrame {
                                 .addComponent(btnTambahTransaksi))
                             .addComponent(jSeparator1)))
                     .addGroup(transaksiLayout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addGroup(transaksiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(transaksiLayout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel27)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cetakStruk))
-                            .addComponent(jScrollPane7))))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel27)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cetakStruk))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, transaksiLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane7)))
                 .addContainerGap())
-            .addGroup(transaksiLayout.createSequentialGroup()
-                .addGap(258, 258, 258)
-                .addComponent(btnBeli, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         transaksiLayout.setVerticalGroup(
             transaksiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1177,7 +1250,7 @@ public class formUtama extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBeli)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(transaksiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cetakStruk)
@@ -1461,6 +1534,132 @@ public class formUtama extends javax.swing.JFrame {
 
         getContentPane().add(kasir, "card5");
 
+        jPanel14.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jLabel36.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel36.setText("DETAIL TRANSAKSI");
+
+        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
+        jPanel14.setLayout(jPanel14Layout);
+        jPanel14Layout.setHorizontalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel14Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel36)
+                .addContainerGap(431, Short.MAX_VALUE))
+        );
+        jPanel14Layout.setVerticalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel36, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+        );
+
+        jLabel37.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel37.setText("Daftar Detail Transaksi");
+
+        tabelDetailTransaksi.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane9.setViewportView(tabelDetailTransaksi);
+
+        javax.swing.GroupLayout detailTransaksiLayout = new javax.swing.GroupLayout(detailTransaksi);
+        detailTransaksi.setLayout(detailTransaksiLayout);
+        detailTransaksiLayout.setHorizontalGroup(
+            detailTransaksiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(detailTransaksiLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(detailTransaksiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane9)
+                    .addGroup(detailTransaksiLayout.createSequentialGroup()
+                        .addComponent(jLabel37, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        detailTransaksiLayout.setVerticalGroup(
+            detailTransaksiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(detailTransaksiLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel37)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(198, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(detailTransaksi, "card8");
+
+        jPanel13.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jLabel34.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel34.setText("PELANGGAN");
+
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel34)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel34, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+        );
+
+        tabelPelanggan.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane8.setViewportView(tabelPelanggan);
+
+        jLabel35.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel35.setText("Daftar Pelanggan");
+
+        javax.swing.GroupLayout pelangganLayout = new javax.swing.GroupLayout(pelanggan);
+        pelanggan.setLayout(pelangganLayout);
+        pelangganLayout.setHorizontalGroup(
+            pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pelangganLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE)
+                    .addGroup(pelangganLayout.createSequentialGroup()
+                        .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        pelangganLayout.setVerticalGroup(
+            pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pelangganLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel35)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(158, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(pelanggan, "card7");
+
         jMenu5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/home.png"))); // NOI18N
         jMenu5.setText("Home");
         jMenu5.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1473,14 +1672,23 @@ public class formUtama extends javax.swing.JFrame {
         jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/data.png"))); // NOI18N
         jMenu1.setText("Data");
 
-        jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/kasir.png"))); // NOI18N
-        jMenuItem5.setText("Kasir");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/kasir.png"))); // NOI18N
+        jMenuItem8.setText("Kasir");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                jMenuItem8ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem5);
+        jMenu1.add(jMenuItem8);
+
+        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/kasir.png"))); // NOI18N
+        jMenuItem2.setText("Pelanggan");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
 
         cetakLaporan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/penjualan.png"))); // NOI18N
         cetakLaporan.setText("Laporan Penjualan");
@@ -1523,6 +1731,25 @@ public class formUtama extends javax.swing.JFrame {
                 jMenu3MouseClicked(evt);
             }
         });
+
+        jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/transaksi.png"))); // NOI18N
+        jMenuItem6.setText("Transaksi");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem6);
+
+        jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/data.png"))); // NOI18N
+        jMenuItem7.setText("Detail Transaksi");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem7);
+
         jMenuBar1.add(jMenu3);
 
         jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/logout.png"))); // NOI18N
@@ -1618,15 +1845,6 @@ public class formUtama extends javax.swing.JFrame {
            }
        }
     }//GEN-LAST:event_btnHapusKasirActionPerformed
-
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        // Kasir       
-        dashboard.setVisible(false);
-        kasir.setVisible(true);
-        makanan.setVisible(false);
-        minuman.setVisible(false);
-        transaksi.setVisible(false);
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
         // Keluar
@@ -1841,6 +2059,8 @@ public class formUtama extends javax.swing.JFrame {
         }
     }
     
+    
+    
     private void btnBeliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBeliActionPerformed
         // TODO add your handling code here:
         con = Koneksi.getConnection();
@@ -1936,24 +2156,6 @@ public class formUtama extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error karena : "+e);
         }
     }//GEN-LAST:event_cmbIdMinumanItemStateChanged
-
-    private void cetakLaporanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cetakLaporanActionPerformed
-        // TODO add your handling code here:        
-        
-      con = Koneksi.getConnection();
-            String NamaFile = "/restoran/report/laporanPenjualan.jasper";
-        try {
-            InputStream Report;
-            Report = getClass().getResourceAsStream(NamaFile);
-            JasperPrint print = JasperFillManager.fillReport(Report, null, con);
-            JasperViewer view = new JasperViewer(print, false);
-            view.setZoomRatio(CENTER_ALIGNMENT);
-            view.setVisible(true);
-            view.setExtendedState(view.MAXIMIZED_BOTH);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error karena :"+e);
-        }
-    }//GEN-LAST:event_cetakLaporanActionPerformed
 
     private void btnTambahTransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahTransaksiActionPerformed
         // TODO add your handling code here:
@@ -2099,6 +2301,68 @@ public class formUtama extends javax.swing.JFrame {
         btnTambahKasir.setText("Batal");
     }//GEN-LAST:event_tabelKasirMouseClicked
  String not;
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        // Transaksi
+        dashboard.setVisible(false);
+        kasir.setVisible(false);
+        makanan.setVisible(false);
+        minuman.setVisible(false);
+        transaksi.setVisible(true);
+        pelanggan.setVisible(false);
+        detailTransaksi.setVisible(false);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        // Detail Transaksi
+        dashboard.setVisible(false);
+        kasir.setVisible(false);
+        makanan.setVisible(false);
+        minuman.setVisible(false);
+        transaksi.setVisible(false);
+        pelanggan.setVisible(false);
+        detailTransaksi.setVisible(true);
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        // Kasir
+        dashboard.setVisible(false);
+        kasir.setVisible(true);
+        makanan.setVisible(false);
+        minuman.setVisible(false);
+        transaksi.setVisible(false);
+        pelanggan.setVisible(false);
+        detailTransaksi.setVisible(false);
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // Pelanggan
+        dashboard.setVisible(false);
+        kasir.setVisible(false);
+        makanan.setVisible(false);
+        minuman.setVisible(false);
+        transaksi.setVisible(false);
+        pelanggan.setVisible(true);
+        detailTransaksi.setVisible(false);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void cetakLaporanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cetakLaporanActionPerformed
+        // TODO add your handling code here:
+
+        con = Koneksi.getConnection();
+        String NamaFile = "/restoran/report/laporanPenjualan.jasper";
+        try {
+            InputStream Report;
+            Report = getClass().getResourceAsStream(NamaFile);
+            JasperPrint print = JasperFillManager.fillReport(Report, null, con);
+            JasperViewer view = new JasperViewer(print, false);
+            view.setZoomRatio(CENTER_ALIGNMENT);
+            view.setVisible(true);
+            view.setExtendedState(view.MAXIMIZED_BOTH);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error karena :"+e);
+        }
+    }//GEN-LAST:event_cetakLaporanActionPerformed
+
     private void tabelTransaksiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelTransaksiMouseClicked
         // TODO add your handling code here:
         try {
@@ -2106,26 +2370,26 @@ public class formUtama extends javax.swing.JFrame {
             int lokasikolom = tabelTransaksi.getSelectedColumn();
             if (lokasikolom == 8) {
                 con = Koneksi.getConnection();
-        int konfirmasiHapus = JOptionPane.showConfirmDialog(null, "Apakah anda yakin ingin menghapus data ini?",
-                "Konfirmasi", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if (konfirmasiHapus == 0)
-        {
-            try {
-                 not = tabelTransaksi.getValueAt(tabelTransaksi.getSelectedRow(), 0).toString();
-                 sql = "DELETE FROM detail_transaksi WHERE no_transaksi = '" +not+"'"; 
-                 psmt = con.prepareStatement(sql);
-                 psmt.executeUpdate();
-                 sql = "DELETE FROM transaksi WHERE no_transaksi = '" +not+"'"; 
-                 psmt = con.prepareStatement(sql);
-                 psmt.executeUpdate();
-                 JOptionPane.showMessageDialog(null, "Data berhasil dihapus", "Pesan", JOptionPane.INFORMATION_MESSAGE);
-                 tampildata2();
-            }
-            catch (Exception e)
-            {
-                JOptionPane.showMessageDialog(null, "Data gagal dihapus karena : "+e);
-            }
-        }
+                int konfirmasiHapus = JOptionPane.showConfirmDialog(null, "Apakah anda yakin ingin menghapus data ini?",
+                    "Konfirmasi", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (konfirmasiHapus == 0)
+                {
+                    try {
+                        not = tabelTransaksi.getValueAt(tabelTransaksi.getSelectedRow(), 0).toString();
+                        sql = "DELETE FROM detail_transaksi WHERE no_transaksi = '" +not+"'";
+                        psmt = con.prepareStatement(sql);
+                        psmt.executeUpdate();
+                        sql = "DELETE FROM transaksi WHERE no_transaksi = '" +not+"'";
+                        psmt = con.prepareStatement(sql);
+                        psmt.executeUpdate();
+                        JOptionPane.showMessageDialog(null, "Data berhasil dihapus", "Pesan", JOptionPane.INFORMATION_MESSAGE);
+                        tampildata2();
+                    }
+                    catch (Exception e)
+                    {
+                        JOptionPane.showMessageDialog(null, "Data gagal dihapus karena : "+e);
+                    }
+                }
             }
         } catch (Exception e) {
         }
@@ -2212,6 +2476,7 @@ public class formUtama extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmbIdMakanan;
     private javax.swing.JComboBox<String> cmbIdMinuman;
     private javax.swing.JPanel dashboard;
+    private javax.swing.JPanel detailTransaksi;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -2245,6 +2510,10 @@ public class formUtama extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -2258,11 +2527,16 @@ public class formUtama extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -2278,14 +2552,19 @@ public class formUtama extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable5;
     private javax.swing.JTable jTable6;
     private javax.swing.JPanel kasir;
     private javax.swing.JPanel makanan;
     private javax.swing.JPanel minuman;
+    private javax.swing.JPanel pelanggan;
     private javax.swing.JTable t_DaftarTransaksi;
+    private javax.swing.JTable tabelDetailTransaksi;
     private javax.swing.JTable tabelKasir;
+    private javax.swing.JTable tabelPelanggan;
     public static final javax.swing.JTable tabelTransaksi = new javax.swing.JTable();
     private javax.swing.JTable tableMakanan;
     private javax.swing.JTable tableMinuman;
