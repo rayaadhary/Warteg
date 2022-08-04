@@ -1,5 +1,7 @@
 package restoran.utama;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Desktop;
 import static java.awt.SystemColor.desktop;
 import java.io.File;
@@ -13,8 +15,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import static javax.swing.SwingConstants.CENTER;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -63,6 +69,17 @@ public class formUtama extends javax.swing.JFrame {
         idPelanggan();
         idMinuman();
     }
+    
+    public static class hapus extends DefaultTableCellRenderer{
+        
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFokus, int row, int column){
+            setIcon(new ImageIcon("src\\icon\\Delete_15px_1.png"));
+            setBackground(Color.WHITE);
+            setHorizontalAlignment(CENTER);
+            return this;
+        }
+    }
+    
     
     private void jumlahKasir() {
         try {
@@ -1165,6 +1182,9 @@ public class formUtama extends javax.swing.JFrame {
             }
         });
         jScrollPane7.setViewportView(tabelTransaksi);
+        if (tabelTransaksi.getColumnModel().getColumnCount() > 0) {
+            tabelTransaksi.getColumnModel().getColumn(8).setCellRenderer(new formUtama.hapus());
+        }
 
         javax.swing.GroupLayout transaksiLayout = new javax.swing.GroupLayout(transaksi);
         transaksi.setLayout(transaksiLayout);
