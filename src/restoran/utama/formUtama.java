@@ -2047,38 +2047,75 @@ public class formUtama extends javax.swing.JFrame {
         txtTanggal.setText(format.format(skrg));
     }
     
-    public void noTransaksi(){
-        con = Koneksi.getConnection();
-        sql = "SELECT no_transaksi FROM transaksi";
+//    public void noTransaksi(){
+//        con = Koneksi.getConnection();
+//        sql = "SELECT no_transaksi FROM transaksi";
+//        try {
+//            stt = con.createStatement();
+//            rss = stt.executeQuery(sql);
+//            if(rss.last()) {
+//                txtTransaksi.setText(String.valueOf(rss.getInt(1)+1));
+//            } else
+//                txtTransaksi.setText("1");            
+//        } catch (Exception e) {
+//           e.printStackTrace();
+//        }
+//    }
+    
+         private void noTransaksi(){
         try {
-            stt = con.createStatement();
+            con = Koneksi.getConnection();
+             stt = con.createStatement();
+             sql = "SELECT * FROM `transaksi` ORDER BY no_transaksi DESC";
             rss = stt.executeQuery(sql);
-            if(rss.last()) {
-                txtTransaksi.setText(String.valueOf(rss.getInt(1)+1));
-            } else
-                txtTransaksi.setText("1");            
-        } catch (Exception e) {
-           e.printStackTrace();
+            if(rss.next()){
+             txtTransaksi.setText(String.valueOf(rss.getInt(1)+1));
+            }else{
+                      txtTransaksi.setText("1");  
+            }
+            rss.close();
+            stt.close();
+        }
+        catch (Exception e){
+            JOptionPane.showMessageDialog(null, e);
         }
     }
     
-    public void idPelanggan() {
-        con = Koneksi.getConnection();
-        sql = "SELECT id_pelanggan FROM pelanggan";
+//    public void idPelanggan() {
+//        con = Koneksi.getConnection();
+//        sql = "SELECT id_pelanggan FROM pelanggan";
+//        try {
+//            stt = con.createStatement();
+//            rss = stt.executeQuery(sql);
+//            if(rss.next()) {
+//                txtIdPelanggan.setText(String.valueOf(rss.getInt(1)+1));
+//            }
+//            else {
+//                txtTransaksi.setText("1");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+    
+      private void idPelanggan(){
         try {
-            stt = con.createStatement();
+            con = Koneksi.getConnection();
+             stt = con.createStatement();
+             sql = "SELECT * FROM `pelanggan` ORDER BY id_pelanggan DESC";
             rss = stt.executeQuery(sql);
-            if(rss.last()) {
-                txtIdPelanggan.setText(String.valueOf(rss.getInt(1)+1));
+            if(rss.next()){
+             txtIdPelanggan.setText(String.valueOf(rss.getInt(1)+1));
+            }else{
+                   txtIdPelanggan.setText("1");  
             }
-            else {
-                txtTransaksi.setText("1");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            rss.close();
+            stt.close();
+        }
+        catch (Exception e){
+            JOptionPane.showMessageDialog(null, e);
         }
     }
-    
     
     
     private void btnBeliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBeliActionPerformed
